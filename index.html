@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AR ukázka: ozubené kolo</title>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<style>
+  :root { --bg: #F3F4F1; --ink: #1B232B; --muted: #3D4852; --accent: #00707A; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+    background: var(--bg); color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header { padding: 20px 20px 8px; }
+  h1 { margin: 0 0 6px; font-size: 1.4rem; }
+  header p { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.4; }
+  model-viewer { flex: 1; width: 100%; min-height: 60vh; background: #E2E5E0; }
+  .ar-tlacitko {
+    position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%);
+    border: 0; border-radius: 999px; padding: 16px 32px;
+    background: var(--accent); color: #fff; font-size: 1.1rem; font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
+  }
+  #bez-ar { display: none; margin: 12px 20px 20px; padding: 12px 16px; border-radius: 12px; background: #fff; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Ozubené kolo v AR</h1>
+  <p>Klepněte na „Zobrazit v AR“, namiřte telefon na stůl a součást položte. Model je ve skutečné velikosti.</p>
+</header>
+
+<!-- Vlastní model: nahraďte soubor model.glb (rozměry v metrech).
+     Až budete mít model.usdz otestovaný na iPhonu, přidejte k model-viewer atribut ios-src="model.usdz".
+     Bez něj si model-viewer vytvoří USDZ pro iPhone sám, za běhu. -->
+<model-viewer id="model"
+  src="model.glb"
+  alt="3D model ozubeného kola"
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  ar-scale="fixed"
+  camera-controls
+  touch-action="pan-y"
+  shadow-intensity="1">
+  <button slot="ar-button" class="ar-tlacitko">Zobrazit v AR</button>
+</model-viewer>
+
+<p id="bez-ar">Na tomto zařízení AR spustit nejde (například na počítači). Model si můžete otáčet prstem nebo myší.</p>
+
+<script>
+  const mv = document.getElementById('model');
+  mv.addEventListener('load', () => {
+    if (!mv.canActivateAR) document.getElementById('bez-ar').style.display = 'block';
+  });
+</script>
+</body>
+</html>
