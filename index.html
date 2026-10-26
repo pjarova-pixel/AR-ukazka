@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AR ukázka: ozubené kolo</title>
+<title>AR ukázka: robotické pracoviště</title>
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 <style>
-  :root { --bg: #F3F4F1; --ink: #1B232B; --muted: #3D4852; --accent: #00707A; }
+  :root { --bg: #F3F6FA; --ink: #14213D; --muted: #34465C; --accent: #1F4E8C; }
   * { box-sizing: border-box; }
   body {
     margin: 0; min-height: 100vh; display: flex; flex-direction: column;
@@ -16,7 +16,7 @@
   header { padding: 20px 20px 8px; }
   h1 { margin: 0 0 6px; font-size: 1.4rem; }
   header p { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.4; }
-  model-viewer { flex: 1; width: 100%; min-height: 60vh; background: #E2E5E0; }
+  model-viewer { flex: 1; width: 100%; min-height: 60vh; background: #DFE6EF; }
   .ar-tlacitko {
     position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%);
     border: 0; border-radius: 999px; padding: 16px 32px;
@@ -28,8 +28,8 @@
 </head>
 <body>
 <header>
-  <h1>Ozubené kolo v AR</h1>
-  <p>Klepněte na „Zobrazit v AR“, namiřte telefon na stůl a součást položte. Model je ve skutečné velikosti.</p>
+  <h1>Robotické pracoviště v AR</h1>
+  <p>Klepněte na „Zobrazit v AR“, namiřte telefon na stůl a pracoviště položte. Je to zmenšený model (asi 56 × 38 cm). Čísla na panelu nad robotem jsou jen ukázková.</p>
 </header>
 
 <!-- Vlastní model: nahraďte soubor model.glb (rozměry v metrech).
@@ -37,11 +37,12 @@
      Bez něj si model-viewer vytvoří USDZ pro iPhone sám, za běhu. -->
 <model-viewer id="model"
   src="model.glb"
-  alt="3D model ozubeného kola"
+  alt="3D model zmenšeného robotického pracoviště s dopravníkem a datovým panelem"
   ar
   ar-modes="webxr scene-viewer quick-look"
   ar-scale="fixed"
   camera-controls
+  camera-orbit="30deg 70deg auto"
   touch-action="pan-y"
   shadow-intensity="1">
   <button slot="ar-button" class="ar-tlacitko">Zobrazit v AR</button>
