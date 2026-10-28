@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AR ukázka: robotické pracoviště</title>
+<title>AR ukázka: najdi vadu</title>
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 <style>
   :root { --bg: #F3F6FA; --ink: #14213D; --muted: #34465C; --accent: #1F4E8C; }
@@ -23,26 +23,43 @@
     background: var(--accent); color: #fff; font-size: 1.1rem; font-weight: 600;
     box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
   }
+  .prepinac { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 20px 14px; }
+  .volba {
+    border: 2px solid var(--accent); border-radius: 999px; padding: 10px 18px;
+    background: #fff; color: var(--accent); font-size: 1rem; font-weight: 600;
+  }
+  .volba.aktivni { background: var(--accent); color: #fff; }
   #bez-ar { display: none; margin: 12px 20px 20px; padding: 12px 16px; border-radius: 12px; background: #fff; color: var(--muted); }
 </style>
 </head>
 <body>
 <header>
-  <h1>Robotické pracoviště v AR</h1>
-  <p>Klepněte na „Zobrazit v AR“, namiřte telefon na stůl a pracoviště položte. Je to zmenšený model (asi 56 × 38 cm). Čísla na panelu nad robotem jsou jen ukázková.</p>
+  <h1 id="nadpis">Najdi vadu</h1>
+  <p id="popis">Na této skříni převodovky je jedna vada. Položte ji v AR na lavici, nebo s ní otáčejte prstem, a najděte ji. Kdo ji najde první, zvedne ruku.</p>
 </header>
+
+<div class="prepinac" role="group" aria-label="Výběr modelu">
+  <button type="button" class="volba aktivni" data-src="model.glb"
+    data-nadpis="Najdi vadu"
+    data-popis="Na této skříni převodovky je jedna vada. Položte ji v AR na lavici, nebo s ní otáčejte prstem, a najděte ji. Kdo ji najde první, zvedne ruku."
+    data-alt="3D model skříně převodovky">Najdi vadu</button>
+  <button type="button" class="volba" data-src="operator.glb"
+    data-nadpis="Bonus: Operator 4.0"
+    data-popis="Operátor, který si vzal všech osm typů Operator 4.0 najednou. Postavička je vysoká asi 45 cm, panel vedle ní ukazuje, co všechno má na sobě."
+    data-alt="3D postavička pracovníka s exoskeletem, AR brýlemi, VR brýlemi na helmě, chytrými hodinkami, sluchátkem, kobotem na rameni, chatovací bublinou a tabletem">Bonus: Operator 4.0</button>
+</div>
 
 <!-- Vlastní model: nahraďte soubor model.glb (rozměry v metrech).
      Až budete mít model.usdz otestovaný na iPhonu, přidejte k model-viewer atribut ios-src="model.usdz".
      Bez něj si model-viewer vytvoří USDZ pro iPhone sám, za běhu. -->
 <model-viewer id="model"
   src="model.glb"
-  alt="3D model zmenšeného robotického pracoviště s dopravníkem a datovým panelem"
+  alt="3D model skříně převodovky"
   ar
   ar-modes="webxr scene-viewer quick-look"
   ar-scale="fixed"
   camera-controls
-  camera-orbit="30deg 70deg auto"
+  camera-orbit="35deg 70deg auto"
   touch-action="pan-y"
   shadow-intensity="1">
   <button slot="ar-button" class="ar-tlacitko">Zobrazit v AR</button>
@@ -54,6 +71,16 @@
   const mv = document.getElementById('model');
   mv.addEventListener('load', () => {
     if (!mv.canActivateAR) document.getElementById('bez-ar').style.display = 'block';
+  });
+  document.querySelectorAll('.volba').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.volba').forEach((x) => x.classList.remove('aktivni'));
+      b.classList.add('aktivni');
+      mv.src = b.dataset.src;
+      mv.alt = b.dataset.alt;
+      document.getElementById('nadpis').textContent = b.dataset.nadpis;
+      document.getElementById('popis').textContent = b.dataset.popis;
+    });
   });
 </script>
 </body>
